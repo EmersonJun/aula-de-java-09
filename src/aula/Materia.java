@@ -1,3 +1,4 @@
+package aula;
 public class Materia implements Comparable<Materia>{
     private String nome;
 

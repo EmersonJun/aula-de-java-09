@@ -1,99 +1,48 @@
+
+
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class App {
-    public static void main(String[] args) throws Exception {
-        
+    public static void main(String[] args) {
+    Livro livro = new Livro("mobdick", "jonas", "romance", 7);
+    Livro livro2 = new Livro("batman", "joao", "acao", 1);
+    Livro livro3 = new Livro("divina comedia", "homi veio", "romance", 0);
 
-        Aluno aluno = new Aluno("pedro", new ArrayList<>());
+    List<Livro> listaLivros = new ArrayList<>();
+        listaLivros.add(livro);
+        listaLivros.add(livro2);
+        listaLivros.add(livro3);
 
-        String[] nomesMaterias = {"php", "java", "c", "c#"};
+        Biblioteca biblioteca = new Biblioteca("biblioteca central", listaLivros);
+        Cliente cliente = new Cliente("carlos");
 
-        for(String mat : nomesMaterias){
-            aluno.addMateria(new Materia(mat));
+        List<Livro> livrosParaEmprestar = new ArrayList<>();
+        livrosParaEmprestar.add(new Livro("mobdick", "", "", 5) );
+        System.out.println("");
+        livrosParaEmprestar.add(new Livro("batman", "", "", 1));
 
-            aluno.ordenarMaterias();
-            System.out.println(aluno);
+        List<Livro> livrosEmprestados = biblioteca.emprestarLivros(livrosParaEmprestar);
 
-            aluno.ordenarMaterias();
-            System.out.println(aluno);
+        // Adicionando livros emprestados ao cliente
+        cliente.setLivros(livrosEmprestados);
+
+        // Exibindo os livros que o cliente pegou emprestado
+        System.out.println("Livros emprestados para " + cliente.getNome() + ": " + cliente.getLivros());
+
+        // Exibindo o estoque atualizado da biblioteca
+        System.out.println("apos o emprestimo");
+        for (Livro livroDisponivel : biblioteca.getLivrosDisponiveis()) {
+            System.out.println("Livro: " + livroDisponivel.getNome() + " | Quantidade: " + livroDisponivel.getQuantidade());
         }
+        biblioteca.devolverLivros(cliente.getLivros());
 
-
-
-
-            System.out.println("################ Stream em java ##############");
-
-
-            Materia html = aluno.getMaterias()
-            .stream()
-            .filter(m -> m.getNome().equals("HTML5"))
-            .findFirst().orElse(null);
-        System.out.println(html);
-
-        aluno.addMateria(new Materia("php"));
-        List<Materia> listaNova = aluno.getMaterias()
-        .stream()
-        .map(m -> new Materia(m.getNome() + "!")).collect(Collectors.toList());
-        System.out.println(listaNova);
-
-        listaNova = aluno.getMaterias()
-        .stream().filter(m-> m.getNome().equals("Php")).collect(Collectors.toList());
-
-        System.out.println("lista nova: "+listaNova);
-
-        System.out.println(aluno.getMaterias()
-        .stream()
-        .map(Materia::getNome)
-        .reduce("\n Matrias: ", (novaString, stringInteradora) -> stringInteradora + "")
-        );
-
-
-        System.out.println("\n############# Set em java ##############\n");
-        //hashset nao mantem ordem nenhuma
-        Set<String> set = new HashSet<>();
-        set.add("java");
-        set.add("php");
-        set.add("php");
-        set.add("c++");
-        set.add("HTML5");
-        set.add("HTML5");
-        set.add("css");
-
-        System.out.println(set);
-
-        
-        //linkedhashset mantem ordem
-        Set<String> linkedSet = new LinkedHashSet<>();
-        linkedSet.add("java");
-        linkedSet.add("php");
-        linkedSet.add("php");
-        linkedSet.add("c++");
-        linkedSet.add("HTML5");
-        linkedSet.add("HTML5");
-        linkedSet.add("css");
-
-        System.out.println(linkedSet);
-
-
-        //ordem alfabetica
-        Set<String> treedSet = new TreeSet<>();
-        treedSet.add("java");
-        treedSet.add("php");
-        treedSet.add("php");
-        treedSet.add("c++");
-        treedSet.add("HTML5");
-        treedSet.add("HTML5");
-        treedSet.add("css");
-
-        System.out.println(treedSet);
-
+        // Zerando a lista de livros do cliente após a devolução
+        System.out.println("###########################################################");
+        System.out.println("apos a devolucao");
+        cliente.setLivros(new ArrayList<>());
+        for (Livro livroDisponivel : biblioteca.getLivrosDisponiveis()) {
+            System.out.println("Livro: " + livroDisponivel.getNome() + " | Quantidade: " + livroDisponivel.getQuantidade());
+        }
     }
 }

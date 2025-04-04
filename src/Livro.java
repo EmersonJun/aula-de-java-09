@@ -1,6 +1,7 @@
-package ex1;
+
 
 import java.util.List;
+import java.util.stream.Collector;
 
 public class Livro implements Comparable<Livro> {
     private String nome, autor, genero;
@@ -11,6 +12,16 @@ public class Livro implements Comparable<Livro> {
         this.genero = genero;
         this.quantidade = quantidade;
     }
+    public int diminuirEstoque(){
+        if (quantidade > 0) {
+            quantidade--;
+        }
+        return quantidade;
+    }
+    public int aumentarEstoque(){
+        return quantidade ++;
+    }
+    
     public void verEstoque(){
         System.out.println(quantidade);
     }
@@ -44,7 +55,7 @@ public class Livro implements Comparable<Livro> {
     }
     @Override
     public int compareTo(Livro e) {
-        return 0;
+        return this.nome.compareToIgnoreCase(e.getNome());
     }
     
 }
